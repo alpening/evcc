@@ -134,13 +134,7 @@ func (wb *PrachtAlpha) Enabled() (bool, error) {
 		return false, err
 	}
 
-	// get total current (https://github.com/evcc-io/evcc/issues/3738)
-	t, err := wb.conn.ReadHoldingRegisters(prachtTotalCurrent, 1)
-	if err != nil {
-		return false, err
-	}
-
-	return binary.BigEndian.Uint16(b) > 0 && binary.BigEndian.Uint16(t) > 0, nil
+	return binary.BigEndian.Uint16(b) > 0, nil
 }
 
 // Enable implements the api.Charger interface
@@ -156,11 +150,6 @@ func (wb *PrachtAlpha) Enable(enable bool) error {
 func (wb *PrachtAlpha) setCurrent(current uint16) error {
 	reg := wb.register(prachtConnCurrent)
 	_, err := wb.conn.WriteSingleRegister(reg, current)
-
-	// set total current (https://github.com/evcc-io/evcc/issues/3738)
-	if err == nil {
-		_, err = wb.conn.WriteSingleRegister(prachtTotalCurrent, current)
-	}
 
 	return err
 }
