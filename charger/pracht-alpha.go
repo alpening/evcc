@@ -139,7 +139,8 @@ func (wb *PrachtAlpha) Enabled() (bool, error) {
 
 // Enable implements the api.Charger interface
 func (wb *PrachtAlpha) Enable(enable bool) error {
-	var curr uint16 = 1
+	// https://github.com/evcc-io/evcc/pull/9862/commits/f699700a84c0c3527bb6360ff855d7cf39b5d86a
+	var curr uint16 = 2
 	if enable {
 		curr = wb.curr
 	}
