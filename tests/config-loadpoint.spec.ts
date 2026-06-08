@@ -103,6 +103,7 @@ test.describe("charging loadpoint", async () => {
     await chargerModal.getByLabel("Charge status").selectOption("A");
     await chargerModal.getByRole("button", { name: "Save" }).click();
     await expectModalHidden(chargerModal);
+    await expectModalVisible(lpModal);
 
     await lpModal.getByRole("button", { name: "Save" }).click();
     await expectModalHidden(lpModal);
@@ -156,7 +157,7 @@ test.describe("charging loadpoint", async () => {
     // second loadpoint: increase priority
     await page.getByTestId("loadpoint").nth(1).getByRole("button", { name: "edit" }).click();
     await expectModalVisible(lpModal);
-    await expect(lpModal.getByLabel("Priority")).toHaveValue("0 (default)");
+    await expect(lpModal.getByLabel("Priority")).toHaveValue("0");
     await lpModal.getByLabel("Priority").selectOption("1");
     await lpModal.getByRole("button", { name: "Save" }).click();
     await expectModalHidden(lpModal);
@@ -182,7 +183,7 @@ test.describe("charging loadpoint", async () => {
     // check priorities
     await page.getByTestId("loadpoint").nth(1).getByRole("button", { name: "edit" }).click();
     await expectModalVisible(lpModal);
-    await expect(lpModal.getByLabel("Priority")).toHaveValue("0 (default)");
+    await expect(lpModal.getByLabel("Priority")).toHaveValue("0");
   });
 
   test("vehicle", async ({ page }) => {
@@ -419,7 +420,7 @@ test.describe("charging loadpoint", async () => {
       "status: # charger status (A: not connected, B: connected, C: charging)"
     );
 
-    await editorClear(chargerEditor, 20);
+    await editorClear(chargerEditor);
     await editorPaste(
       chargerEditor,
       page,
@@ -458,7 +459,7 @@ power:
     await meterModal.getByLabel("Manufacturer").selectOption("User-defined device");
     await page.waitForLoadState("networkidle");
     const meterEditor = meterModal.getByTestId("yaml-editor");
-    await editorClear(meterEditor, 20);
+    await editorClear(meterEditor);
     await editorPaste(
       meterEditor,
       page,
@@ -576,7 +577,7 @@ test.describe("heating loadpoint", async () => {
     await modal.getByLabel("Manufacturer").selectOption("User-defined heat pump");
 
     const editor = modal.getByTestId("yaml-editor");
-    await editorClear(editor, 20);
+    await editorClear(editor);
     await editorPaste(
       editor,
       page,
